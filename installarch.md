@@ -9,7 +9,7 @@
 
 #### 1.1 Boot live enviroment
 
-Just set your moab bios to start the pendrive first
+Just set your mobo bios to start the pendrive first
 
 ### 2 - Setup enviroment
 
@@ -21,6 +21,7 @@ setfont ter-132n
 ```bash
 loadkeys br-latin1-us
 ```
+or `br-abnt2`
 
 #### 2.2 - Create partition table
 
@@ -71,8 +72,9 @@ swapon /dev/swap_partition
 
 for this step, use pacstrap as below:
 ```bash
-pacstrap -K /mnt base linux linux-firmware amd-ucode nano vim networkmanager neofetch htop git sudo
+pacstrap -K /mnt base linux linux-firmware amd-ucode neovim networkmanager git sudo man-db
 ```
+or `intel-ucode`
 
 #### 3.1 - Generate file system table (FSTAB)
 
