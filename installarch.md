@@ -27,7 +27,7 @@ or `br-abnt2`
 
 check which disk will be partitioned with:
 ```bash
-fdisk -l
+lsblk -f
 ```
 then start partitioning it
 ```bash
@@ -44,7 +44,7 @@ fdisk /dev/the_disk_to_be_partitioned
 
 for root:
 ```bash
-mkfs.ext4 /dv/root_partition
+mkfs.ext4 /dev/root_partition
 ```
 
 for swap:
@@ -95,24 +95,14 @@ passwd
 ### 4 - Setup user
 
 ```bash
+pacman -S zsh
 useradd -m -g users -G wheel,storage,power,video,audio -s /bin/bash malcolnlmr
-```
-```bash
 passwd malcolnlmr
 ```
 ```bash
-EDITOR=nano visudo
+EDITOR=nvim visudo
 ```
 then go to `#%whell ALL=(ALL:ALL) NOPASSWD: ALL` and uncomment it, remind yourself to save and exit.
-```bash
-su - malcolnlmr
-```
-```bash
-sudo pacman -Syu
-```
-```bash
-exit
-```
 
 ### 5 - Setup localization
 #### 5.1 Timezone
@@ -124,28 +114,23 @@ hwclock --systohc
 ```
 #### 5.2 Locale
 ```bash
-nano /etc/locale.gen
+nvim /etc/locale.gen
 ```
 and uncomment `en_US.UTF-8` and any other UTF-8 needed. The generate locale:
 ```bash
 locale-gen
 ```
-check in `/etc/locale.conf` if `LANG=en_US.UTF-8`.<br>
-Then setup the console keyboard layout:
-```bash
-nano /etc/vconsole.conf
-```
-then set `KEYMAP=br-latin1-us`
+and write on `/etc/locale.conf` this `LANG=en_US.UTF-8`.<br>
 
 ### 6 - Network configuration
 #### 6.1 - setup hostname
 ```bash
-vim /etc/hostname
+nvim /etc/hostname
 ```
 just write `malcoln-arch`, and its going to be the hostname.
 #### 6.2 - setup hosts
 ```bash
-vim /etc/hosts
+nvim /etc/hosts
 ```
 set it to something like: 
 - 127.0.0.1     localhost
@@ -158,7 +143,7 @@ pacman -S grub efibootmgr dosfstools mtools
 ```
 #### 7.1 - Setup grub
 ```bash
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 ```
 ```bash
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -188,13 +173,16 @@ setfont -d
 ```
 Gonna be easier to read :D
 
-### 1 - Installing a GUI
+### 1 - Installing Hyprland and my personal apps
 
 ```bash
-sudo pacman -S xorg sddm plasma-meta plasma-workspace kde-applications
+sudo pacman -S sddm hyprland kitty hyprpaper waybar wofi stow firefox wget gcc python python-pip python-requests ttf-jetbrains-mono-nerd nautilus brightnessctl hyprshot mako pipewire wireplumber qt5-wayland qt6-wayland uwsm libnewt hyprpolkitagent xdg-desktop-portal-hyprland
 ```
-its a full, install, if you need less apps, remove `kde-applications` and install only what you'll need.
 
+#### Install oh-my-zsh
+```bash
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+```
 #### 1.1 - Enable SDDM
 
 ```bash
